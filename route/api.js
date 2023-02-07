@@ -25,9 +25,16 @@ route.post('/register',(req,res)=>{
         }
         else{
             console.log(register,'data save to server')
-            let payload={usname:register.username,userid:register._id,register}
-            let token =jwt.sign(payload,'secret')
-            res.status(200).send({token});
+            let payload={staus:"Register Successfully"}
+            // let token =jwt.sign(payload,'secret')
+            res.status(200).send(payload); 
+            // {
+            //     "username": "mubbo",
+            //     "password": "123",
+            //     "confirmpassword": "123",
+            //     "email": "123@gmail.com",
+            //     "type": "buyer"
+            // }
         }
     })
     // CLient ID a2237ad6-14da-4188-8f8a-746ecf38b7e6
@@ -61,7 +68,7 @@ User.findOne({username:loginData.username},(err,succ)=>{
                 res.status(401).send('Invalid Password');    
             }
             else{
-                let payload={subject:succ._id}
+                let payload={userdetail:succ}
                 let token =jwt.sign(payload,'secret')
                 res.status(200).send({token});
             }
