@@ -25,6 +25,13 @@ console.log(data,'Data check')
             let token={Status:'Property Save'}
             res.status(200).send(token);
         }
+    //  {   "name": "axe",
+    //     "addres":{
+    //           "add":"hains road",
+    //         "pincode":"400011",
+    //         "city":"mumbai",
+    //         "state":"Maharashtra"
+    //     } }
     })
 });
 route.get('/prop/id=:id',(req,res)=>{
