@@ -3,15 +3,17 @@ const route = express.Router();
 const jwt=require('jsonwebtoken')
 const mongoose=require('mongoose');
 const User =require('../model/user')
+const raidbstring="mongodb://mongo:00y3f5vQUXcMNODqkU3c@containers-us-west-168.railway.app:6958";
 const dbcloudurl='mongodb+srv://mubbo:123@cluster0.xzkwekg.mongodb.net/?retryWrites=true&w=majority';
-mongoose.connect('mongodb://localhost:27017/appData',{  useNewUrlParser: true },err=>{
-    if(err){
-        console.log("eeror occured",err)
-    }
-    else{
-        console.log("Connect to Mangodb")
-    }
-});
+// 'mongodb://localhost:27017/appData',{  useNewUrlParser: true }
+// mongoose.connect(raidbstring,err=>{
+//     if(err){
+//         console.log("eeror occured",err)
+//     }
+//     else{
+//         console.log("Connect to Mangodb")
+//     }
+// });
 route.post('/register',(req,res)=>{
     let usersdata=req.body;
     console.log(usersdata,'user data');
@@ -36,8 +38,9 @@ route.post('/register',(req,res)=>{
 route.get('/data',(req,res)=>{
     User.find((err,docs)=>{
         if (!err) {
+            let responsee={status :'running'}
             res.send(docs);
-            console.log(docs)
+            console.log(responsee)
         } else {
             console.log('Failed to retrieve the Course List: ' + err);
         }
