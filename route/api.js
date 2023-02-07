@@ -55,17 +55,20 @@ route.get('/data',(req,res)=>{
 })
 route.post('/login',(req,res)=>{
 let loginData=req.body;
+
 User.findOne({username:loginData.username},(err,succ)=>{
     if(err){
         console.log(err,'err occur');
     }
     else{
         if(!succ){
-            res.status(401).send('Invalid Username');
+            let data={status:"Invalid Username"}
+            res.status(200).send(data);
         }
         else{
             if(succ.password !== loginData.password){
-                res.status(401).send('Invalid Password');    
+                let data={status:"Invalid Password"}
+                res.status(200).send(data);    
             }
             else{
                 let payload={userdetail:succ}
