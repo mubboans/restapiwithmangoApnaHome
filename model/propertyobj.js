@@ -7,7 +7,9 @@ const propSchema =new schema({
         pincode:String,
         city:String,
         state:String
-    }
+    },
+    price:String,
+
 })
 // addres:{    }, "address":{  }
 
