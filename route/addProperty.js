@@ -49,7 +49,7 @@ route.put('/addProperty/id=:id',(req,res)=>{
     propObj.findByIdAndUpdate(req.params.id,{$set:{name:req.body.name,addres:req.body.addres,price:req.body.price}},{new:true},(err,obj)=>{
         if(err)
         {
-            let responsed={"status":"Failed"}
+            let responsed={"status":"Failed","err":err}
             res.send(responsed);
         }
         else{
@@ -59,6 +59,19 @@ route.put('/addProperty/id=:id',(req,res)=>{
     }
     )
 })
+route.delete('/addProperty/id=:id',(req,res)=>{
+        propObj.findByIdAndRemove(req.params.id,(err,obj)=>{
+            if(err){
+                let responsed={"status":"Failed","err":err}
+                res.send(responsed);
+            }
+            else{
+                console.log(obj)
+                let responsed={"status":"Deleted Succesfully"}
+                res.send(responsed);
+            }
+        })
+    })
 route.get('/property',(req,res)=>{
     propObj.find((err,obj)=>{
       if(err){
