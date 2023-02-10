@@ -45,6 +45,20 @@ route.get('/prop/id=:id', (req, res) => {
         }
     )
 })
+route.put('/addProperty/id=:id',(req,res)=>{
+    propObj.findByIdAndUpdate(req.params.id,{$set:{name:req.body.name,addres:req.body.addres,price:req.body.price}},{new:true},(err,obj)=>{
+        if(err)
+        {
+            let responsed={"status":"Failed"}
+            res.send(responsed);
+        }
+        else{
+            let responsed={"status":"Data updated"}
+            res.send(responsed);
+        }
+    }
+    )
+})
 route.get('/property',(req,res)=>{
     propObj.find((err,obj)=>{
       if(err){
