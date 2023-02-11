@@ -19,7 +19,7 @@ const Login = (req,res)=>{
                 if(succ.password !== req.body.password){
                     let data={status:"Invalid Password"}
                     res.status(200).send(data);    
-                }
+                } 
                 else{
                     let payload={username:succ.username,id:succ._id,email:succ.email,type:succ.type,user_role:succ.user_role}
                     let token =jwt.sign(payload,'secret')
