@@ -1,14 +1,20 @@
 const mongoose=require('mongoose');
 const schema=mongoose.Schema
 const propSchema =new schema({
-    name:String,
+    name:{
+        type: String,
+        required: true
+    },
     addres:{
         add:String,
         pincode:String,
         city:String,
         state:String
     },
-    price:String,
+    price:{
+        type: String,
+        required: true
+    },
 
 })
 // addres:{    }, "address":{  }

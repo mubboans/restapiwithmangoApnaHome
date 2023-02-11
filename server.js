@@ -1,9 +1,11 @@
+require('dotenv').config()
 const express = require('express');
 const cors=require("cors");
 const prop=require('./route/addProperty')
 const api=require('./route/api')
 const db=require('./db/connectdb')
-const port =3000;
+const port =process.env.PORT || 8000;
+const dbstring=process.env.DBURL;
 const app=express();
 app.use(express.json());
 const corsOptions ={
@@ -19,7 +21,7 @@ app.get('/',(req,res)=>{
 })
 app.listen(port,async ()=>{
     try{
-        await db("mongodb://mongo:00y3f5vQUXcMNODqkU3c@containers-us-west-168.railway.app:6958")
+        await db(dbstring)
         console.log(`Listening on port ${port}`);
         console.log('connect to db');
     }
