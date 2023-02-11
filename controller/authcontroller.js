@@ -1,9 +1,8 @@
 const User =require('../model/user')
-
 const jwt=require('jsonwebtoken')
 function createtoken(data){
-    let payload={userdetail:succ}
-    let token =jwt.sign(payload,'secret')
+    let token =jwt.sign(data,'secret');
+    return token;
 }
 const Login = (req,res)=>{
     User.findOne({username:req.body.username},(err,succ)=>{
@@ -22,7 +21,7 @@ const Login = (req,res)=>{
                 } 
                 else{
                     let payload={username:succ.username,id:succ._id,email:succ.email,type:succ.type,user_role:succ.user_role}
-                    let token =jwt.sign(payload,'secret')
+                    let token =createtoken(payload)
                     res.status(200).send({token,username:succ.username,id:succ._id,email:succ.email,type:succ.type,user_role:succ.user_role});
                 }
             }
