@@ -3,7 +3,7 @@ const route = express.Router();
 const jwt=require('jsonwebtoken')
 const mongoose=require('mongoose');
 const {login,register}=require('../controller/authcontroller')
-
+const valrequest = require('../middleware/validateRequest')
 const User =require('../model/user')
 const raidbstring="mongodb://mongo:00y3f5vQUXcMNODqkU3c@containers-us-west-168.railway.app:6958";
 const dbcloudurl='mongodb+srv://mubbo:123@cluster0.xzkwekg.mongodb.net/?retryWrites=true&w=majority';
@@ -16,7 +16,7 @@ const dbcloudurl='mongodb+srv://mubbo:123@cluster0.xzkwekg.mongodb.net/?retryWri
 //         console.log("Connect to Mangodb")
 //     }
 // });
-route.post('/register',register)
+route.post('/register',valrequest,register)
 // (req,res)=>{
 //     let usersdata=req.body;
 //     console.log(usersdata,'user data');
@@ -61,7 +61,7 @@ route.get('/data',(req,res)=>{
         }
     })
 })
-route.post('/login',login)
+route.post('/login',valrequest ,login)
 // (req,res)=>{
 //     let loginData=req.body;
     

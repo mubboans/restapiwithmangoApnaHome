@@ -8,21 +8,32 @@ const {
 const Login = (req,res)=>{
     User.findOne({username:req.body.username},(err,succ)=>{
         if(err){
-            console.log(err,'err occur');
+            res.status(200).send({error:err});
         }
         else{
             if(!succ){
-                let data={status:"Invalid Username"}
-                res.status(200).send(data);
+                // if(!req.body.username){
+                //     res.status(403).send({error:"Password Required"}); 
+                // }
+                // else{
+                    let data={status:"Invalid Username"}
+                    res.status(200).send(data);
+                // }
+                
             }
             else{
                 if(succ.password !== req.body.password){
-                    let data={status:"Invalid Password"}
-                    res.status(200).send(data);    
+                    // if(!req.body.password){
+                    //     res.status(403).send({error:"Password Required"}); 
+                    // }
+                    // else{
+                        let data={status:"Invalid Password"}
+                        res.status(200).send(data);
+                    // }
+                        
                 } 
                 else{
-
-           
+                    console.log(req.body)
                     let payload={username:succ.username,id:succ._id,email:succ.email,type:succ.type,user_role:succ.user_role}
                     // let token =createtoken(payload)
                     const refreshToken = randomPassword();
