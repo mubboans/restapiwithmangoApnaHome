@@ -2,7 +2,7 @@ const express = require("express");
 const route = express.Router();
 const propObj = require('../model/propertyobj');
 const verifyUserToken = require("../middleware/verifyToken");
-const { deleteprop,update,addprop,getprop} = require('../controller/propertyController')
+const { deleteprop,update,addprop,getprop,getPropertByID} = require('../controller/propertyController')
 // mongoose.connect('mongodb://localhost:27017/addProperty',{  useNewUrlParser: true },err=>{
 //     if(err){
 //         console.log("eeror occured",err)
@@ -42,18 +42,7 @@ route.post('/addProperty',verifyUserToken,addprop);
 //     "state":"Maharashtra"
 // },
 // "price":"42000" }
-route.get('/prop/id=:id', (req, res) => {
-    propObj.findById(req.params.id).exec(
-        (err, obj) => {
-            if (err) {
-                console.log(err);
-            }
-            else {
-                res.json(obj)
-            }
-        }
-    )
-})
+route.get('/prop/user=:userid', getPropertByID)
 route.put('/addProperty/id=:id',verifyUserToken,update)
 // (req,res)=>{
 //     propObj.findByIdAndUpdate(req.params.id,{$set:{name:req.body.name,addres:req.body.addres,price:req.body.price}},{new:true},(err,obj)=>{

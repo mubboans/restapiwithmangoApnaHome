@@ -15,6 +15,10 @@ const propSchema =new schema({
         type: String,
         required: true
     },
+    userID:{
+        type:String,
+        required:true,
+    }
 
 })
 // {   "name": "axe",

@@ -26,6 +26,23 @@ const update = (req,res)=>{
     }
     )
 } 
+const getPropertByID = (req,res)=>{
+    const id = req.params.userid.toString()
+        const d=typeof id
+    console.log(id.toString(),'id check',d);
+    propObj.find({userID:id}).exec(
+            (err, obj) => {
+                if (err) {
+                    const responsed={status:"error in getting data",error:err};
+                    res.status(200).send(responsed)
+                }
+                else {
+                    res.json(obj)
+                }
+            }
+        )
+    
+}
 
 const addprop=(req,res)=>{
     let data = req.body;
@@ -34,7 +51,7 @@ const addprop=(req,res)=>{
     propertyobj.save((err, ress) => {
         if (err) {
             let responsed ={status:"Error in Saving Property",error:err}
-            res.send(200).send(responsed)
+            res.status(200).send(responsed)
         }
         else {
             let responsed = { Status: 'Property Save' }
@@ -48,9 +65,8 @@ const addprop=(req,res)=>{
         //         "state":"Maharashtra"
         //     } }
     })
-}
+} 
 const getprop=(req,res)=>{
-    
         propObj.find((err,obj)=>{
           if(err){
             let reponsed={status:"Error to get data",error:err}
@@ -66,5 +82,6 @@ module.exports={
     deleteprop:deleteprop,
     update:update,
     addprop:addprop,
-    getprop:getprop
+    getprop:getprop,
+    getPropertByID:getPropertByID
 }
