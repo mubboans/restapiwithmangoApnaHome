@@ -1,6 +1,7 @@
 const express = require("express");
 const route = express.Router();
 const propObj = require('../model/propertyobj');
+const verifyUserToken = require("../middleware/verifyToken");
 const { deleteprop,update,addprop,getprop} = require('../controller/propertyController')
 // mongoose.connect('mongodb://localhost:27017/addProperty',{  useNewUrlParser: true },err=>{
 //     if(err){
@@ -10,7 +11,7 @@ const { deleteprop,update,addprop,getprop} = require('../controller/propertyCont
 //         console.log("Connect to Mangodb")
 //     }
 // });
-route.post('/addProperty',addprop);
+route.post('/addProperty',verifyUserToken,addprop);
 // (req, res) => {
 //     let data = req.body;
 //     let propertyobj = new propObj(data);
@@ -53,7 +54,7 @@ route.get('/prop/id=:id', (req, res) => {
         }
     )
 })
-route.put('/addProperty/id=:id',update)
+route.put('/addProperty/id=:id',verifyUserToken,update)
 // (req,res)=>{
 //     propObj.findByIdAndUpdate(req.params.id,{$set:{name:req.body.name,addres:req.body.addres,price:req.body.price}},{new:true},(err,obj)=>{
 //         if(err)
@@ -68,7 +69,7 @@ route.put('/addProperty/id=:id',update)
 //     }
 //     )
 // }
-route.delete('/addProperty/id=:id',deleteprop)
+route.delete('/addProperty/id=:id',verifyUserToken,deleteprop)
 // (req,res)=>{
 //     propObj.findByIdAndRemove(req.params.id,(err,obj)=>{
 //         if(err){
@@ -82,7 +83,7 @@ route.delete('/addProperty/id=:id',deleteprop)
 //         }
 //     })
 // }
-route.get('/property',getprop)
+route.get('/property',verifyUserToken, getprop)
 // (req,res)=>{
 //     propObj.find((err,obj)=>{
 //       if(err){

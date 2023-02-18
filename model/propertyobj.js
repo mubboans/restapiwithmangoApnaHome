@@ -9,7 +9,7 @@ const propSchema =new schema({
         add:String,
         pincode:String,
         city:String,
-        state:String
+        state:String,
     },
     price:{
         type: String,
@@ -17,6 +17,14 @@ const propSchema =new schema({
     },
 
 })
+// {   "name": "axe",
+// "addres":{
+//       "add":"hains road",
+//     "pincode":"400011", 
+//     "city":"mumbai",
+//     "state":"Maharashtra"
+// } 
+// "price":"20000"}
 // addres:{    }, "address":{  }
 
 module.exports=mongoose.model('propObj',propSchema)

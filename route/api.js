@@ -95,4 +95,5 @@ route.get('/user',(req,res)=>{
     res.send(data);
     console.log(data,req.body);
 })
+
 module.exports = route;
