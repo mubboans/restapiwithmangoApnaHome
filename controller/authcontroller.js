@@ -1,9 +1,10 @@
 const User =require('../model/user')
 const jwt=require('jsonwebtoken')
-function createtoken(data){
-    let token =jwt.sign(data,'secret');
-    return token;
-}
+const {
+    attachedTokens,
+    randomPassword
+  } =require('../utils/jwt')
+
 const Login = (req,res)=>{
     User.findOne({username:req.body.username},(err,succ)=>{
         if(err){
@@ -20,9 +21,19 @@ const Login = (req,res)=>{
                     res.status(200).send(data);    
                 } 
                 else{
+
+           
                     let payload={username:succ.username,id:succ._id,email:succ.email,type:succ.type,user_role:succ.user_role}
-                    let token =createtoken(payload)
-                    res.status(200).send({token,username:succ.username,id:succ._id,email:succ.email,type:succ.type,user_role:succ.user_role});
+                    // let token =createtoken(payload)
+                    const refreshToken = randomPassword();
+                    var tok=attachedTokens({user:payload,refreshToken}) 
+                    res.status(200).json({success: true,
+                        error: "",
+                        message: "Logged in successfully",
+                        data:{
+                            username:succ.username,id:succ._id,email:succ.email,type:succ.type,user_role:succ.user_role
+                        }
+                        ,...tok});
                 }
             }
     
