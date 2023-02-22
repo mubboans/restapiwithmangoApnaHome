@@ -56,31 +56,39 @@ const Register = (req,res)=>{
     let usersdata=req.body;
     console.log(usersdata,'user data');
     let userdataamodel =new User(usersdata);
-    userdataamodel.save((err,register)=>{
-        if(err)
-        {
-            console.log("eeror occured before Saving",err)
-            let resposnes={
-                resons:err,
-                status:"failed"
+    User.find({username:usersdata.username}).exec(
+        (err, obj) => {
+            if(err){
+               
             }
-            res.status(500).send(resposnes)
-        }
-        else{
-         
-            let payload={staus:"Register Successfully"}
+            else{
+                console.log(typeof obj,'response',obj.length)
 
-            res.status(200).send(payload); 
-            // {
-            //     "username": "mubbo123123",
-            //     "password": "123",
-            //     "confirmpassword": "123",
-            //     "email": "123@gmail.com",
-            //     "type": "buyer",
-            //     "user_role":"2"
-            // }
-        }
-    })
+                if(obj.length <= 0){
+                    userdataamodel.save((err,register)=>{
+                        if(err)
+                        {
+                            
+                            let resposnes={
+                                resons:err,
+                                status:"failed"
+                            }
+                            res.status(500).send(resposnes)
+                        }
+                        else{
+                         
+                            let payload={staus:"Register Successfully"}
+                
+                            res.status(200).send(payload); 
+                        }
+                    })
+                }
+                else{
+                     res.status(500).send({status:"Useranme Already Exists Try With Different Name"})  
+                }
+            }
+        })
+   
 }
 module.exports={
     login:Login,register:Register}

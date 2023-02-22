@@ -3,7 +3,6 @@ const User = require('../model/user')
 const verifyUserToken = async (req,res,next)=>{
     let token;
     const authHeader = req.headers.authorization;
-    console.log(authHeader,'Header');
     if(authHeader && authHeader.startsWith("Bearer")){
         token = authHeader.split(" ")[1];
     }
@@ -12,7 +11,6 @@ const verifyUserToken = async (req,res,next)=>{
     }
     try{ 
          const head= isTokenValid(token);
-        console.log(head,'check');
             if(head.user){
                 next();
             }

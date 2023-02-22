@@ -18,8 +18,7 @@ const userSchema =new schema({
         required: true
     },
     type:{
-        type: String,
-        required: true
+        type: String
     },
     user_role:{
         type: String,

@@ -17,8 +17,8 @@ const createRefreshJWT = ({ payload, expiration }) => {
 const isTokenValid = (token) => jwt.verify(token, process.env.JWT_SECRET);
 
 const attachedTokens = ({ user, refreshToken }) => {
-    const oneDay = '1h';
-    const longerExp = '2h';
+    const oneDay = '12h';
+    const longerExp = '12h';
   
     const accessTokenJWT = createToken({ payload: { user }, expiration: oneDay });
     const refreshTokenJWT = createRefreshJWT({
