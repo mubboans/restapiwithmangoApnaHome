@@ -14,6 +14,7 @@ const deleteprop = (req,res)=>{
     })
 }
 const update =async (req,res)=>{
+    
     if(!res.files || !req.files.tempimage){
         res.send({mesagge:"Please Select Image",error:"Update Failed"})
     }
@@ -21,10 +22,10 @@ const update =async (req,res)=>{
         const { image } = req.files;
         const maxSize = 1024 * 1024;
         if(!tempimage.mimetype.startsWith("image")) {
-            return res.status(402).send({mesagge:"Please select Image",error:"Post Failed"})
+            return res.status(402).send({mesagge:"Please File Type as Image",error:"Post Failed"})
           }
         if(image.size > maxSize){
-            return res.status(402).send({mesagge:"Please select Image",error:"Post Failed"})
+            return res.status(402).send({mesagge:"Please select Image less than 1 mb",error:"Post Failed"})
         }
        const result=await cloudinary.uploader.upload(image.tempFilePath,{
             use_filename:true,
