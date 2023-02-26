@@ -25,8 +25,8 @@ const propSchema =new schema({
     },
     img:
     {
-        data: Buffer,
-        contentType: String
+       type:String,
+       required:true
     }
 })
 // {   "name": "axe",

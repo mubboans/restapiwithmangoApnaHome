@@ -4,18 +4,30 @@ const cors=require("cors");
 const prop=require('./route/addProperty')
 const api=require('./route/api')
 const db=require('./db/connectdb')
+const cloudinary = require("cloudinary").v2;
+const fileUpload = require('express-fileupload');
+const bodyParser=require('body-parser');
 const port =process.env.PORT || 8000;
 const dbstring= process.env.DBURLDEV || process.env.DBURL ;
 // process.env.DBURL ||
 const app=express();
-const fs = require('fs');
-app.use(express.json());
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.CLOUD_API_KEY,
+    api_secret: process.env.CLOUD_API_SECRET,
+})
+// app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 const corsOptions ={
     origin:'*', 
     credentials:true, 
     optionSuccessStatus:200,
  }
 app.use(cors(corsOptions))
+app.use(fileUpload({
+    useTempFiles:true,
+})) 
 app.use('',api);
 app.use('',prop);
 app.get('/',(req,res)=>{
