@@ -5,11 +5,15 @@ const propSchema =new schema({
         type: String,
         required: true
     },
+    rating:{
+        type:Number,
+        required:true
+    },
     addres:{
-        add:String,
-        pincode:String,
-        city:String,
-        state:String,
+        add:{type:String},
+        pincode:{type:Number},
+        city:{type:String},
+        state:{type:String},
     },
     price:{
         type: String,
@@ -27,6 +31,10 @@ const propSchema =new schema({
     {
        type:String,
        required:true
+    },
+    img_id:{
+        type:String,
+        required:true
     }
 })
 // {   "name": "axe",
