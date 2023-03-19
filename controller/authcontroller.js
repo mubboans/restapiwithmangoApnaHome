@@ -8,7 +8,7 @@ const {
 const Login = (req,res)=>{
     User.findOne({username:req.body.username},(err,succ)=>{
         if(err){
-            res.status(200).send({error:err});
+            res.status(400).send({message:'Login Failed',success:false,error:err});
         }
         else{
             if(!succ){
@@ -16,8 +16,8 @@ const Login = (req,res)=>{
                 //     res.status(403).send({error:"Password Required"}); 
                 // }
                 // else{
-                    let data={status:"Invalid Username"}
-                    res.status(200).send(data);
+                    let data={status:"Invalid Username",success:false}
+                    res.status(400).send(data);
                 // }
                 
             }
@@ -27,8 +27,8 @@ const Login = (req,res)=>{
                     //     res.status(403).send({error:"Password Required"}); 
                     // }
                     // else{
-                        let data={status:"Invalid Password"}
-                        res.status(200).send(data);
+                        let data={status:"Invalid Password",success:false}
+                        res.status(400).send(data);
                     // }
                         
                 } 
@@ -59,7 +59,11 @@ const Register = (req,res)=>{
     User.find({username:usersdata.username}).exec(
         (err, obj) => {
             if(err){
-               
+                let resposnes={
+                    error:err,success:false,
+                    status:"Failed to register"
+                }  
+              return res.status(400).send(resposnes)
             }
             else{
                 console.log(typeof obj,'response',obj.length)
@@ -73,18 +77,18 @@ const Register = (req,res)=>{
                                 resons:err,
                                 status:"failed"
                             }
-                            res.status(500).send(resposnes)
+                            return   res.status(400).send(resposnes)
                         }
                         else{
                          
-                            let payload={staus:"Register Successfully"}
+                            let payload={status:"Register Successfully",succes:true}
                 
-                            res.status(200).send(payload); 
+                            return  res.status(200).send(payload); 
                         }
                     })
                 }
                 else{
-                     res.status(500).send({status:"Useranme Already Exists Try With Different Name"})  
+                    return res.status(400).send({status:"Useranme Already Exists Try With Different Name",success:false})  
                 }
             }
         })

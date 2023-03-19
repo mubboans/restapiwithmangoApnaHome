@@ -15,12 +15,12 @@ const deleteprop =async (req,res)=>{
             }
             propObj.findByIdAndRemove(id,(err,obj)=>{
                 if(err){
-                    let responsed={"status":"Failed","err":err}
+                    let responsed={status:"Failed",success:false,error:err}
                     res.send(responsed);
                 }
                 else{
                     console.log(obj)
-                    let responsed={"status":"Deleted Succesfully"}
+                    let responsed={status:"Deleted Succesfully",success:true,}
                     res.send(responsed);
                 }
             })
@@ -49,10 +49,10 @@ const update =async (req,res)=>{
             if(tempimage){
                 const maxSize = 1024 * 1024;
                 if(!tempimage.mimetype.startsWith("image")) {
-                    return res.status(400).send({mesagge:"Please File Type as Image",error:"Post Failed"})
+                    return res.status(400).send({mesagge:"Please File Type as Image",error:"File type not match with image",success:false})
                   }
                 if(tempimage.size > maxSize){
-                    return res.status(402).send({mesagge:"Please select Image less than 1 mb",error:"Post Failed"})
+                    return res.status(400).send({mesagge:"Please select Image less than 1 mb",error:"Image size is greater",success:false})
                 }
     
                const result=await cloudinary.uploader.upload(tempimage.tempFilePath,{
@@ -83,12 +83,12 @@ const update =async (req,res)=>{
         propObj.findByIdAndUpdate({_id:id},updatedObj,(err,obj)=>{
             if(err)
             {
-                let responsed={"message":"Failed","err":err}
-                res.send(responsed);
+                let responsed={"message":"Failed","err":err,success:false}
+                res.status(400).send(responsed);
             }
             else{
                 let responsed={"message":"Data updated","success":true}
-                res.send(responsed);
+                res.status(200).send(responsed)
             }
         }
         )
@@ -98,14 +98,14 @@ const update =async (req,res)=>{
 const getPropertByID = (req,res)=>{
     const id = req.params.userid.toString()
     
-    propObj.find({userID:id}).exec(
+    propObj.find({userID:id}).sort({_id:-1}).exec(
             (err, obj) => {
                 if (err) {
-                    const responsed={status:"error in getting data",error:err};
-                    res.status(200).send(responsed)
+                    const responsed={status:"error in getting data",success:false,error:err};
+                    res.status(404).send(responsed)
                 }
                 else {
-                    res.json(obj)
+                    res.status(200).send({message:'Successfull Gey',data:obj,succes:true})
                 }
             }
         )
@@ -119,7 +119,7 @@ const addprop=async (req,res)=>{
     let propertyobj = new propObj(data);
   
     if(!req.files || !req.files.tempimage){
-       return res.send({mesagge:"Please Select Image",error:"Post Failed"})
+       return res.status(400).send({mesagge:"Please Select Image",success:false,error:"Post Failed"})
     }
     else{
         const maxSize = 1024 * 1024;
@@ -127,10 +127,10 @@ const addprop=async (req,res)=>{
         const {tempimage}=req.files
        
         if(!tempimage.mimetype.startsWith("image")) {
-            return res.status(402).send({mesagge:"Please select Image",error:"Post Failed"})
+            return res.status(400).send({mesagge:"Please select Image",error:"Post Failed"})
           }
         if(tempimage.size > maxSize){
-            return res.status(402).send({mesagge:"Please select Image less than 1MB",error:"Post Failed"})
+            return res.status(400).send({mesagge:"Please select Image less than 1MB",error:"Post Failed"})
         }
     
      
@@ -178,11 +178,11 @@ const addprop=async (req,res)=>{
 const getprop=(req,res)=>{
         propObj.find((err,obj)=>{
           if(err){
-            let reponsed={status:"Error to get data",error:err}
-            res.status(200).send(reponsed)
+            let reponsed={status:"Error to get data",error:err,success:false}
+            res.status(404).send(reponsed)
           }   
           else{
-            res.send(obj);
+            res.status(200).send({data:obj,success:true});
           }
         })
     

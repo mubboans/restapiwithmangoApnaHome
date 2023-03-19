@@ -8,6 +8,7 @@ const cloudinary = require("cloudinary").v2;
 const fileUpload = require('express-fileupload');
 const bodyParser=require('body-parser');
 const port =process.env.PORT || 8000;
+const notFound = require('./middleware/404-not-found');
 const dbstring= process.env.DBURLDEV || process.env.DBURL ;
 // process.env.DBURL ||
 const app=express();
@@ -30,6 +31,7 @@ app.use(fileUpload({
 })) 
 app.use('',api);
 app.use('',prop);
+app.use(notFound);
 app.get('/',(req,res)=>{
     res.send('Hello World!  From Mubashir');
 })
