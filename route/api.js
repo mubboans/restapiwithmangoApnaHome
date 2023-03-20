@@ -49,13 +49,14 @@ route.post('/register',valrequest,register)
 //     // ID 5433f94d-6dba-481f-829a-670f24c7e4fb
 //     // heroku config:add \ HEROKU_OAUTH_ID=a2237ad6-14da-4188-8f8a-746ecf38b7e6 \ HEROKU_OAUTH_SECRET=4911b42e-ecee-4066-87e6-3161f296bcbd
 // }
-route.get('/data',(req,res)=>{
-    User.find((err,docs)=>{
+route.get('/users',(req,res)=>{
+    User.find().sort({_id:-1}).exec((err,docs)=>{
         if (!err) {
-            let responsee={status :'running'}
-            res.send(docs);
+            let responsee={status :'success',success:true,message:'Successfull fetch all Users',data:docs}
+            res.status(200).send(responsee);
             console.log(responsee)
         } else {
+
             console.log('Failed to retrieve the Course List: ' + err);
         }
     })

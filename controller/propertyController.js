@@ -16,12 +16,12 @@ const deleteprop =async (req,res)=>{
             propObj.findByIdAndRemove(id,(err,obj)=>{
                 if(err){
                     let responsed={status:"Failed",success:false,error:err}
-                    res.send(responsed);
+                    res.status(400).send(responsed);
                 }
                 else{
                     console.log(obj)
                     let responsed={status:"Deleted Succesfully",success:true,}
-                    res.send(responsed);
+                    res.status(200).send(responsed);
                 }
             })
         }
@@ -157,11 +157,11 @@ const addprop=async (req,res)=>{
         propertyobj.save((err, ress) => {
             if (err) {
                 let responsed ={mesagge:"Error in Saving Property",error:err.message}
-               return res.status(200).send(responsed)
+               return res.status(400).send(responsed)
             }
             else {
                 let responsed = {mesagge: 'Property Save',"success":true }
-               return res.status(200).send(responsed);
+               return res.status(201).send(responsed);
             }
             //  {   "name": "axe",
             //     "addres":{

@@ -33,7 +33,7 @@ app.use('',api);
 app.use('',prop);
 app.use(notFound);
 app.get('/',(req,res)=>{
-    res.send('Hello World!  From Mubashir');
+    res.status(200).send('Hello World!  From Mubashir');
 })
   app.listen(port,async ()=>{
     try{ 
