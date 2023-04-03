@@ -16,14 +16,15 @@ const createRefreshJWT = ({ payload, expiration }) => {
 
 const isTokenValid = (token) => jwt.verify(token, process.env.JWT_SECRET);
 
-const attachedTokens = ({ user, refreshToken }) => {
-    const oneDay = '12h';
-    const longerExp = '12h';
+const attachedTokens = ({ user}) => {
+  const oneHour = '6h'
+    const onehalfDay = '6h';
+    const longerExp = '30h';
   
-    const accessTokenJWT = createToken({ payload: { user }, expiration: oneDay });
+    const accessTokenJWT = createToken({ payload: { user }, expiration: oneHour });
     const refreshTokenJWT = createRefreshJWT({
-      payload: { user, refreshToken },
-      expiration: longerExp,
+      payload: { user},
+      expiration: onehalfDay,
     });
   
     return {

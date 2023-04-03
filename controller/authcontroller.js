@@ -6,6 +6,7 @@ const {
   } =require('../utils/jwt')
 
 const Login = (req,res)=>{
+    // console.log('login hit');
     User.findOne({username:req.body.username},(err,succ)=>{
         if(err){
             res.status(400).send({message:'Login Failed',success:false,error:err});
@@ -37,7 +38,7 @@ const Login = (req,res)=>{
                     let payload={username:succ.username,id:succ._id,email:succ.email,type:succ.type,user_role:succ.user_role}
                     // let token =createtoken(payload)
                     const refreshToken = randomPassword();
-                    var tok=attachedTokens({user:payload,refreshToken}) 
+                    var tok=attachedTokens({user:payload}) 
                     res.status(200).json({success: true,
                         error: "",
                         message: "Logged in successfully",

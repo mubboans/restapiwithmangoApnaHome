@@ -1,11 +1,11 @@
 const express = require("express");
 const route = express.Router();
-const mongoose=require('mongoose');
+// const mongoose=require('mongoose');
 const {login,register}=require('../controller/authcontroller')
 const valrequest = require('../middleware/validateRequest')
 const User =require('../model/user')
-const raildbstring="mongodb://mongo:00y3f5vQUXcMNODqkU3c@containers-us-west-168.railway.app:6958";
-const dbcloudurl='mongodb+srv://mubbo:123@cluster0.xzkwekg.mongodb.net/?retryWrites=true&w=majority';
+// const raildbstring="mongodb://mongo:00y3f5vQUXcMNODqkU3c@containers-us-west-168.railway.app:6958";
+// const dbcloudurl='mongodb+srv://mubbo:123@cluster0.xzkwekg.mongodb.net/?retryWrites=true&w=majority';
 // 'mongodb://localhost:27017/appData',{  useNewUrlParser: true }
 // mongoose.connect(raidbstring,err=>{
 //     if(err){
@@ -49,18 +49,7 @@ route.post('/register',valrequest,register)
 //     // ID 5433f94d-6dba-481f-829a-670f24c7e4fb
 //     // heroku config:add \ HEROKU_OAUTH_ID=a2237ad6-14da-4188-8f8a-746ecf38b7e6 \ HEROKU_OAUTH_SECRET=4911b42e-ecee-4066-87e6-3161f296bcbd
 // }
-route.get('/users',(req,res)=>{
-    User.find().sort({_id:-1}).exec((err,docs)=>{
-        if (!err) {
-            let responsee={status :'success',success:true,message:'Successfull fetch all Users',data:docs}
-            res.status(200).send(responsee);
-            console.log(responsee)
-        } else {
 
-            console.log('Failed to retrieve the Course List: ' + err);
-        }
-    })
-})
 route.post('/login',valrequest ,login)
 // (req,res)=>{
 //     let loginData=req.body;

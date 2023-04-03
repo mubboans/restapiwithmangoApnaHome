@@ -2,8 +2,9 @@ require('dotenv').config()
 const express = require('express');
 const cors=require("cors");
 const prop=require('./route/addProperty')
-const api=require('./route/api')
+const api=require('./route/authroute')
 const db=require('./db/connectdb')
+const userroute = require('./route/user_route')
 const cloudinary = require("cloudinary").v2;
 const fileUpload = require('express-fileupload');
 const bodyParser=require('body-parser');
@@ -24,6 +25,7 @@ const corsOptions ={
     origin:'*', 
     credentials:true, 
     optionSuccessStatus:200,
+    allowedHeaders: ['Content-Type', 'Authorization']
  }
 app.use(cors(corsOptions))
 app.use(fileUpload({
@@ -31,8 +33,9 @@ app.use(fileUpload({
 })) 
 app.use('',api);
 app.use('',prop);
+app.use('',userroute)
 app.use(notFound);
-app.get('/',(req,res)=>{
+app.get('/check',(req,res)=>{
     res.status(200).send('Hello World!  From Mubashir');
 })
   app.listen(port,async ()=>{
