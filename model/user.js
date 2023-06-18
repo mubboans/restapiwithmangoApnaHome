@@ -23,6 +23,9 @@ const userSchema =new schema({
     user_role:{
         type: String,
         required: true
-    }
+    },
+    facebookId:{
+        type:String,
+    },
 })
 module.exports=mongoose.model('user',userSchema,'users')

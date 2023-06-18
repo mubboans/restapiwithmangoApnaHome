@@ -7,7 +7,7 @@ const verifyUserToken = async (req,res,next)=>{
         token = authHeader.split(" ")[1];
     }
     if(!token){
-        res.status(404).send({messgae:"Authorization Failed",status:'failed',success:false})
+        res.status(404).send({message:"Request is without token",status:"Token not found",success:false})
     }
     try{ 
          const head= isTokenValid(token);
@@ -15,13 +15,12 @@ const verifyUserToken = async (req,res,next)=>{
                 next();
             }
             else{
-                res.status(401).send({mesagge:"Token expire please relogin",success:false})
+                res.status(401).send({message:"Token is valid",success:false,status:"invalid token"})
             }
    
         }
     catch(error){
-
-        res.status(401).send({status:"Failed To Authenticate",error:error,success:false})
+        res.status(401).send({message:'failed to authenticate',status:"invalid token",error:error,success:false})
     }
 
 }

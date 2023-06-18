@@ -33,6 +33,9 @@ const updateUser=(req,res)=>{
         type:data.type,
         confirmpassword:data.confirmpassword
     }
+    if(data.password !== data.confirmpassword){
+        return  res.status(400).send({message:"Password and Confirm Password Should Match",success:false,status:"fail to update"});
+    }
     User.findByIdAndUpdate({_id:id},userobj,(err,obj)=>{
         if(err){
             res.status(400).send({message:'Failed to update user',success:false,error:err.message})

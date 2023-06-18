@@ -3,7 +3,7 @@ const route = express.Router();
 const propObj = require('../model/propertyobj');
 const fileupload = require("express-fileupload");
 const verifyUserToken = require("../middleware/verifyToken");
-// const imgUpload=require('../utils/imageUpload')
+ 
 const { deleteprop,update,addprop,getprop,getPropertByID} = require('../controller/propertyController')
 // mongoose.connect('mongodb://localhost:27017/addProperty',{  useNewUrlParser: true },err=>{
 //     if(err){

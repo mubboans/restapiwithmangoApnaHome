@@ -11,7 +11,11 @@ const bodyParser=require('body-parser');
 const port =process.env.PORT || 8000;
 const notFound = require('./middleware/404-not-found');
 const dbstring= process.env.DBURLDEV || process.env.DBURL ;
-// process.env.DBURL ||
+const passport  = require('passport');
+const passportSetup = require('./utils/passport');
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
+// process.env.DBURL || 
 const app=express();
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
@@ -31,6 +35,16 @@ app.use(cors(corsOptions))
 app.use(fileUpload({
     useTempFiles:true,
 })) 
+app.use(cookieParser());
+app.use(
+  session({
+    secret: "secret-key",
+    resave: false,
+    saveUninitialized: false
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 app.use('',api);
 app.use('',prop);
 app.use('',userroute)
