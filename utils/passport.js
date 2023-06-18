@@ -5,7 +5,7 @@ const FacebookStrategy = require('passport-facebook').Strategy;
 passport.use(new GoogleStrategy({
     clientID:process.env.GOOGLE_CLOUD_ID,
     clientSecret:process.env.GOOGLE_CLOUD_SECRET,
-    callbackURL:'http://localhost:3000/auth/google/callback',
+    callbackURL:`${process.env.BACK_END_LIVE_URL}auth/google/callback`,
     scope:["profile","email"],
 },
 (accessToken,refreshToken,profile,callback)=>{
@@ -17,9 +17,9 @@ passport.use(new GoogleStrategy({
 ));
 
 passport.use(new FacebookStrategy({
-    clientID: '661895189288585',
-    clientSecret: 'b275444b36a5bed6d1524e7fb706f75a',
-    callbackURL: 'http://localhost:3000/auth/facebook/callback',
+    clientID:process.env.FACEBOOK_APP_ID,
+    clientSecret: process.env.FACEBOOK_SECRET_ID,
+    callbackURL: `${process.env.BACK_END_LIVE_URL}auth/facebook/callback`,
     profileFields: ['id', 'displayName', 'picture.type(large)', 'email', 'birthday', 'friends', 'first_name', 'last_name', 'middle_name', 'gender', 'link']
     // profileFields: ['id', 'displayName', 'emails']
   },

@@ -22,43 +22,32 @@ function generatePassword(length) {
 }
 
 const Login = (req,res)=>{
-    console.log('login');
-    // console.log('login hit');
     User.findOne({username:req.body.username},(err,succ)=>{
         if(err){
             res.status(400).send({message:'Login Failed',success:false,error:err});
         }
         else{
             if(!succ){
-                // if(!req.body.username){
-                //     res.status(403).send({error:"Password Required"}); 
-                // }
-                // else{
+           
                     let data={status:"Invalid Username",success:false}
                     res.status(400).send(data);
-                // }
                 
             }
             else{
                 if(succ.password !== req.body.password){
-                    // if(!req.body.password){
-                    //     res.status(403).send({error:"Password Required"}); 
-                    // }
-                    // else{
+                
                         let data={status:"Invalid Password",success:false}
-                        res.status(400).send(data);
-                    // }
-                        
+                        res.status(400).send(data);                        
                 } 
                 else{
                     console.log(req.body)
                     let payload={username:succ.username,id:succ._id,email:succ.email,type:succ.type,user_role:succ.user_role}
-                    // let token =createtoken(payload)
                     const refreshToken = randomPassword();
                     var tok=attachedTokens({user:payload}) 
                     res.status(200).json({success: true,
                         error: "",
                         message: "Logged in successfully",
+                        profimg:succ.profileImg,
                         data:{
                             username:succ.username,id:succ._id,email:succ.email,type:succ.type,user_role:succ.user_role
                         }
@@ -72,7 +61,6 @@ const Login = (req,res)=>{
 }
 const Register = (req,res)=>{
     let usersdata=req.body;
-    console.log(usersdata,'user data');
     let userdataamodel =new User(usersdata);
     User.find({username:usersdata.username}).exec(
         (err, obj) => {
@@ -84,7 +72,6 @@ const Register = (req,res)=>{
               return res.status(400).send(resposnes)
             }
             else{
-                console.log(typeof obj,'response',obj.length)
 
                 if(obj.length <= 0){
                     userdataamodel.save((err,register)=>{
@@ -121,12 +108,12 @@ const getfacebookuserregister = async (req,res)=>{
         password:password,
         confirmpassword:password,
         email: data._json.email !== undefined ? data._json.email:'demo@gmail.com',
-        user_role:2
+        user_role:2,
+        profileImg:data.photos[0].value
     }
     let userdataamodel =new User(UsersObj);
     let checkuser =await User.find({facebookId:data.id});
     if(checkuser.length > 0){
-        console.log('if');
         let payload={username:checkuser[0].username,id:checkuser[0]._id,email:UsersObj.email,type:UsersObj.type,user_role:UsersObj.user_role}
         var tok=attachedTokens({user:payload}) 
         const queryParams = new URLSearchParams();
@@ -135,12 +122,12 @@ const getfacebookuserregister = async (req,res)=>{
         queryParams.append('message','Logged-in-successfully');
         queryParams.append('accessToken',tok.accessToken);
         queryParams.append('refreshToken',tok.refreshToken);
+        queryParams.append('profimg',UsersObj.profileImg)
         const jsonData = JSON.stringify(payload);
         const encodedData = encodeURIComponent(jsonData);
-        res.redirect(`http://localhost:4200/#/checkuser?${queryParams.toString()}&data=${encodedData}`)
+        res.redirect(`https://my-application-2710f.web.app/#/checkuser?${queryParams.toString()}&data=${encodedData}`)
     }
     else{
-        console.log('else');
         userdataamodel.username=data._json.first_name + addfour,
         userdataamodel.save((err,register)=>{
          if(err)
@@ -164,10 +151,11 @@ const getfacebookuserregister = async (req,res)=>{
               queryParams.append('accessToken',tok.accessToken);
               queryParams.append('refreshToken',tok.refreshToken);
               queryParams.append('newUser',true);  
+              queryParams.append('profimg',UsersObj.profileImg)
               const jsonData = JSON.stringify(payload);
      
        const encodedData = encodeURIComponent(jsonData);
-             res.redirect(`http://localhost:4200/#/checkuser?${queryParams.toString()}&data=${encodedData}`)
+             res.redirect(`https://my-application-2710f.web.app/#/checkuser?${queryParams.toString()}&data=${encodedData}`)
          }
      })
 
@@ -182,14 +170,12 @@ const getgauthsuccess =async (req, res) => {
        password:password,
        confirmpassword:password,
        email: data._json.email,
-       user_role:2
+       user_role:2,
+       profileImg:data.photos[0].value
    }
    let userdataamodel =new User(UsersObj);
    let checkuser =await User.find({email:data._json.email});
-   console.log(checkuser,'user check',checkuser.length);
    if(checkuser.length > 0){
-    
-    console.log('if');
     let payload={username:checkuser[0].username,id:checkuser[0]._id,email:UsersObj.email,type:UsersObj.type,user_role:UsersObj.user_role}
     var tok=attachedTokens({user:payload}) 
     const queryParams = new URLSearchParams();
@@ -198,13 +184,13 @@ const getgauthsuccess =async (req, res) => {
     queryParams.append('message','Logged-in-successfully');
     queryParams.append('accessToken',tok.accessToken);
     queryParams.append('refreshToken',tok.refreshToken);
+    queryParams.append('profimg',UsersObj.profileImg)
     const jsonData = JSON.stringify(payload);
     const encodedData = encodeURIComponent(jsonData);
-    res.redirect(`http://localhost:4200/#/checkuser?${queryParams.toString()}&data=${encodedData}`)
+    res.redirect(`https://my-application-2710f.web.app/#/checkuser?${queryParams.toString()}&data=${encodedData}`)
    }
    else{
     userdataamodel.username=data._json.given_name + addfour,
-        console.log('else',userdataamodel);
         userdataamodel.save((err,register)=>{
          if(err)
          {
@@ -227,10 +213,11 @@ const getgauthsuccess =async (req, res) => {
               queryParams.append('accessToken',tok.accessToken);
               queryParams.append('refreshToken',tok.refreshToken);
               queryParams.append('newUser',true);  
+              queryParams.append('profimg',UsersObj.profileImg)
               const jsonData = JSON.stringify(payload);
      
        const encodedData = encodeURIComponent(jsonData);
-             res.redirect(`http://localhost:4200/#/checkuser?${queryParams.toString()}&data=${encodedData}`)
+             res.redirect(`https://my-application-2710f.web.app/#/checkuser?${queryParams.toString()}&data=${encodedData}`)
          }
      })
         }

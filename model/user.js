@@ -27,5 +27,10 @@ const userSchema =new schema({
     facebookId:{
         type:String,
     },
+    // {profileImg:'https://ucarecdn.com/0d26e991-266c-491f-a842-6e2874527e9a/userprofile.jpg'}
+    profileImg:{
+        type:String,
+        default:'https://ucarecdn.com/0d26e991-266c-491f-a842-6e2874527e9a/userprofile.jpg'
+    }
 })
 module.exports=mongoose.model('user',userSchema,'users')
