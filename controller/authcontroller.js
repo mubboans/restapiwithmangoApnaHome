@@ -29,14 +29,13 @@ const Login = (req,res)=>{
         else{
             if(!succ){
            
-                    let data={status:"Invalid Username",success:false}
+                    let data={message:"Invalid Username",success:false,status:'failed'}
                     res.status(400).send(data);
                 
             }
             else{
                 if(succ.password !== req.body.password){
-                
-                        let data={status:"Invalid Password",success:false}
+                        let data={message:"Invalid Password",success:false,status:'failed'}
                         res.status(400).send(data);                        
                 } 
                 else{
@@ -59,45 +58,32 @@ const Login = (req,res)=>{
     
     })
 }
-const Register = (req,res)=>{
+const Register = async(req,res)=>{
     let usersdata=req.body;
     let userdataamodel =new User(usersdata);
-    User.find({username:usersdata.email}).exec(
-        (err, obj) => {
-            if(err){
+    let users = await User.findOne({email:usersdata.email});
+    console.log(users);
+    if(users == null){
+        userdataamodel.save((err,register)=>{
+            if(err)
+            {
+                
                 let resposnes={
-                    error:err,success:false,
-                    status:"Failed to register"
-                }  
-              return res.status(400).send(resposnes)
+                    resons:err,
+                    status:"failed",
+                    success:false
+                }
+                return   res.status(400).send(resposnes)
             }
             else{
-
-                if(obj.length <= 0){
-                    userdataamodel.save((err,register)=>{
-                        if(err)
-                        {
-                            
-                            let resposnes={
-                                resons:err,
-                                status:"failed"
-                            }
-                            return   res.status(400).send(resposnes)
-                        }
-                        else{
-                         
-                            let payload={status:"Register Successfully",success:true}
-                
-                            return  res.status(200).send(payload); 
-                        }
-                    })
-                }
-                else{
-                    return res.status(400).send({status:"User Already Exists Try With Different Credential",success:false})  
-                }
+                let payload={status:"success",success:true,message:'Register Successfully'}
+                return  res.status(200).send(payload); 
             }
         })
-   
+    }
+    else{
+        return res.status(400).send({message:"User Already Exists Try With Different Credential",success:false,status:'failed'})  
+    } 
 }
 const getfacebookuserregister = async (req,res)=>{
     let data = req.user;
