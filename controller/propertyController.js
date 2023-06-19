@@ -105,7 +105,7 @@ const getPropertByID = (req,res)=>{
                     res.status(404).send(responsed)
                 }
                 else {
-                    res.status(200).send({message:'Successfull Gey',data:obj,succes:true})
+                    res.status(200).send({message:'Successfull Gey',data:obj,success:true})
                 }
             }
         )

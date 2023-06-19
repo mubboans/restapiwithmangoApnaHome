@@ -62,7 +62,7 @@ const Login = (req,res)=>{
 const Register = (req,res)=>{
     let usersdata=req.body;
     let userdataamodel =new User(usersdata);
-    User.find({username:usersdata.username}).exec(
+    User.find({username:usersdata.email}).exec(
         (err, obj) => {
             if(err){
                 let resposnes={
@@ -86,14 +86,14 @@ const Register = (req,res)=>{
                         }
                         else{
                          
-                            let payload={status:"Register Successfully",succes:true}
+                            let payload={status:"Register Successfully",success:true}
                 
                             return  res.status(200).send(payload); 
                         }
                     })
                 }
                 else{
-                    return res.status(400).send({status:"Useranme Already Exists Try With Different Name",success:false})  
+                    return res.status(400).send({status:"User Already Exists Try With Different Credential",success:false})  
                 }
             }
         })
