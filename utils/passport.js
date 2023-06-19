@@ -15,7 +15,6 @@ passport.use(new GoogleStrategy({
    return callback(null,profile)
 }
 ));
-
 passport.use(new FacebookStrategy({
     clientID:process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_SECRET_ID,

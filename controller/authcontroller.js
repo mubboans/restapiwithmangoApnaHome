@@ -125,7 +125,7 @@ const getfacebookuserregister = async (req,res)=>{
         queryParams.append('profimg',UsersObj.profileImg)
         const jsonData = JSON.stringify(payload);
         const encodedData = encodeURIComponent(jsonData);
-        res.redirect(`https://my-application-2710f.web.app/#/checkuser?${queryParams.toString()}&data=${encodedData}`)
+        res.redirect(`${process.env.FRONT_URL_LIVE}checkuser?${queryParams.toString()}&data=${encodedData}`)
     }
     else{
         userdataamodel.username=data._json.first_name + addfour,
@@ -155,7 +155,7 @@ const getfacebookuserregister = async (req,res)=>{
               const jsonData = JSON.stringify(payload);
      
        const encodedData = encodeURIComponent(jsonData);
-             res.redirect(`https://my-application-2710f.web.app/#/checkuser?${queryParams.toString()}&data=${encodedData}`)
+             res.redirect(`${process.env.FRONT_URL_LIVE}checkuser?${queryParams.toString()}&data=${encodedData}`)
          }
      })
 
@@ -163,6 +163,7 @@ const getfacebookuserregister = async (req,res)=>{
 }
 //create admin {username:'adminTest',password:'mubashir',confirmpassword:'mubashir',email:'ansmubasshirr@gmail.com',type:'Admin',user_role:1}
 const getgauthsuccess =async (req, res) => {
+    console.log('google from local');
    let data = req.user;
    let password = generatePassword(12);
    let addfour = generateRandomFourDigitNumber();
@@ -187,7 +188,8 @@ const getgauthsuccess =async (req, res) => {
     queryParams.append('profimg',UsersObj.profileImg)
     const jsonData = JSON.stringify(payload);
     const encodedData = encodeURIComponent(jsonData);
-    res.redirect(`https://my-application-2710f.web.app/#/checkuser?${queryParams.toString()}&data=${encodedData}`)
+    console.log(process.env.FRONT_URL_LIVE,'else');
+    res.redirect(`${process.env.FRONT_URL_LIVE}checkuser?${queryParams.toString()}&data=${encodedData}`)
    }
    else{
     userdataamodel.username=data._json.given_name + addfour,
@@ -217,7 +219,8 @@ const getgauthsuccess =async (req, res) => {
               const jsonData = JSON.stringify(payload);
      
        const encodedData = encodeURIComponent(jsonData);
-             res.redirect(`https://my-application-2710f.web.app/#/checkuser?${queryParams.toString()}&data=${encodedData}`)
+       console.log(process.env.FRONT_URL_LIVE,'if');
+             res.redirect(`${process.env.FRONT_URL_LIVE}checkuser?${queryParams.toString()}&data=${encodedData}`)
          }
      })
         }
