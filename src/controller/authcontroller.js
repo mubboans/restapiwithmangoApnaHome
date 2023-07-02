@@ -9,7 +9,8 @@ function generateRandomFourDigitNumber() {
 
 const {
     attachedTokens,
-    randomPassword
+    randomPassword,
+    isTokenValid
   } =require('../utils/jwt')
 
 const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+[{]}\\|;:'\",.<>/?";
@@ -20,18 +21,26 @@ function generatePassword(length) {
   }
   return password.join("");
 }
-
-const Login = (req,res)=>{
-    User.findOne({username:req.body.username},(err,succ)=>{
+const refreshToken = async (req, res,next) => {
+    let reqbody = req.body;
+    let token = isTokenValid(reqbody.token);
+    if(token || token.user) {
+        console.log(token);
+        res.send({message:"Token Referesh Succesfully", token: token})
+}
+else{
+    
+}
+}
+const Login =async (req,res,next)=>{
+    User.findOne({$or:[{username:req.body.username},{email:req.body.username}]},(err,succ)=>{
         if(err){
             res.status(400).send({message:'Login Failed',success:false,error:err});
         }
         else{
             if(!succ){
-           
-                    let data={message:"Invalid Username",success:false,status:'failed'}
+                    let data={message:"Invalid Username or Email",success:false,status:'failed'}
                     res.status(400).send(data);
-                
             }
             else{
                 if(succ.password !== req.body.password){
@@ -39,6 +48,9 @@ const Login = (req,res)=>{
                         res.status(400).send(data);                        
                 } 
                 else{
+                  if(succ.isDeleted){
+                    return res.send({message:"This user has beed deleted",status:"Try again",success:false,error:"User Deleted"})
+                  }  
                     console.log(req.body)
                     let payload={username:succ.username,id:succ._id,email:succ.email,type:succ.type,user_role:succ.user_role}
                     const refreshToken = randomPassword();

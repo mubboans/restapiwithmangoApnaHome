@@ -12,7 +12,7 @@ const userById = (req,res)=>{
     })
 }
 const getAllusers = (req,res)=>{
-    User.find().sort({_id:-1}).exec((err,docs)=>{
+    User.find({isDeleted:false}).sort({_id:-1}).exec((err,docs)=>{
         if (!err) {
             let responsee={status :'success',success:true,message:'Successfull fetch all Users',data:docs}
             res.status(200).send(responsee);
@@ -23,6 +23,7 @@ const getAllusers = (req,res)=>{
         }
     })
 }
+  
 const updateUser=(req,res)=>{
     let id= req.params.id;
     let data =req.body;
@@ -47,7 +48,7 @@ const updateUser=(req,res)=>{
 }
 const deleteUser=(req,res)=>{
     let id= req.params.id;
-    User.findByIdAndDelete({_id:id},(err,obj)=>{
+    User.findByIdAndUpdate(id,{isDeleted:true},(err,obj)=>{
         if(err){
             res.status(400).send({message:'Failed to delete user',success:false,error:err.message})
         }
@@ -56,4 +57,4 @@ const deleteUser=(req,res)=>{
         }
     })
 }
-module.exports  = {updateUser,deleteUser,userById,getAllusers}
+module.exports  = {updateUser,deleteUser,userById,getAllusers,deleteUser}

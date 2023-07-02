@@ -14,7 +14,10 @@ const createRefreshJWT = ({ payload, expiration }) => {
     return token;
   };
 
-const isTokenValid = (token) => jwt.verify(token, process.env.JWT_SECRET);
+const isTokenValid = (token) =>{
+  let k =jwt.verify(token, process.env.JWT_SECRET);
+  return k; 
+} 
 
 const attachedTokens = ({ user}) => {
   const oneHour = '6h'

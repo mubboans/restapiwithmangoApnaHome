@@ -1,21 +1,21 @@
 require('dotenv').config()
 const express = require('express');
 const cors=require("cors");
-const prop=require('./route/addProperty')
-const api=require('./route/authroute')
-const db=require('./db/connectdb')
-const userroute = require('./route/user_route')
+const propertyroute=require('./src/route/addProperty')
+const authroute=require('./src/route/authroute')
+const db=require('./src/db/connectdb')
+const userroute = require('./src/route/user_route')
 const cloudinary = require("cloudinary").v2;
 const fileUpload = require('express-fileupload');
 const bodyParser=require('body-parser');
 const port =process.env.PORT || 8000;
-const notFound = require('./middleware/404-not-found');
+const notFound = require('./src/middleware/404-not-found');
 const dbstring= process.env.DBURLDEV || process.env.DBURL ;
 const passport  = require('passport');
-const passportSetup = require('./utils/passport');
+const passportSetup = require('./src/utils/passport');
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
-// process.env.DBURL || 
+const verifyToken = require('./src/middleware/verifyToken')
 const app=express();
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
@@ -45,9 +45,9 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-app.use('',api);
-app.use('',prop);
-app.use('',userroute)
+app.use('/myapi/apnahome',authroute);
+app.use('/myapi/apnahome',verifyToken,propertyroute);
+app.use('/myapi/apnahome',verifyToken,userroute);
 app.use(notFound);
 app.get('/check',(req,res)=>{
     res.status(200).send('Hello World!  From Mubashir');
@@ -57,10 +57,8 @@ app.get('/check',(req,res)=>{
         await db(dbstring)
         console.log(`Listening on port ${port}`);
         console.log('connect to db',dbstring);
-        
     }
     catch(err){
         console.log(err,'error'); 
     }
-    
 })

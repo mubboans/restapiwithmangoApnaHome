@@ -6,8 +6,9 @@ const verifyUserToken = async (req,res,next)=>{
     if(authHeader && authHeader.startsWith("Bearer")){
         token = authHeader.split(" ")[1];
     }
+    console.log(token,'bearer token');
     if(!token){
-        res.status(404).send({message:"Request is without token",status:"Token not found",success:false})
+       return res.status(404).send({message:"Request is without token",status:"Token not found",success:false})
     }
     try{ 
          const head= isTokenValid(token);
@@ -15,12 +16,11 @@ const verifyUserToken = async (req,res,next)=>{
                 next();
             }
             else{
-                res.status(401).send({message:"Token is valid",success:false,status:"invalid token"})
+               return res.status(401).send({message:"Token is valid",success:false,status:"invalid token"})
             }
-   
         }
     catch(error){
-        res.status(401).send({message:'failed to authenticate',status:"invalid token",error:error,success:false})
+        return res.status(401).send({message:'failed to authenticate',status:"invalid token",error:error,success:false})
     }
 
 }

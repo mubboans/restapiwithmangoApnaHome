@@ -9,15 +9,23 @@ const propSchema =new schema({
         type:Number,
         required:true
     },
-    addres:{
-        add:{type:String},
-        pincode:{type:Number},
-        city:{type:String},
-        state:{type:String},
+    address:{
+        type:schema.Types.Mixed,
+        default:{
+            "add":"hains road",
+          "pincode":"400011", 
+          "city":"mumbai",
+          "state":"Maharashtra"
+      } 
+        // add:{type:String},
+        // pincode:{type:Number},
+        // city:{type:String},
+        // state:{type:String},
     },
     price:{
         type: String,
-        required: true
+        required: true,
+        
     },
     userID:{
         type:String,
@@ -36,14 +44,9 @@ const propSchema =new schema({
         type:String,
         required:true
     }
-})
+}, { timestamps: true })
 // {   "name": "axe",
-// "addres":{
-    //   "add":"hains road",
-    // "pincode":"400011", 
-    // "city":"mumbai",
-    // "state":"Maharashtra"
-// } 
+
 // "price":"20000" ,"userID":"1","username":""}
 // addres:{    }, "address":{  }
 

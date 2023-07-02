@@ -1,3 +1,5 @@
+const getAllData = require('../commnMethod/getAllData');
+const sendResponse = require('../commnMethod/sendResponse');
 const propObj = require('../model/propertyobj');
 const cloudinary = require("cloudinary").v2;
 const deleteprop =async (req,res)=>{
@@ -65,13 +67,13 @@ const update =async (req,res)=>{
          
         }
        
-        pro.addres.add = req.body.address;
-        pro.addres.city = req.body.city;
-        pro.addres.pincode = req.body.pincode;
-        pro.addres.state = req.body.state;
+        pro.address.add = req.body.address;
+        pro.address.city = req.body.city;
+        pro.address.pincode = req.body.pincode;
+        pro.address.state = req.body.state;
         let updatedObj ={
             name:pro.name,
-            addres:pro.addres,
+            addres:pro.address,
             price:pro.price,
             img:pro.img,
             username:pro.username,
@@ -134,10 +136,10 @@ const addprop=async (req,res)=>{
         }
     
      
-        propertyobj.addres.add = req.body.address;
-        propertyobj.addres.city = req.body.city;
-        propertyobj.addres.pincode = req.body.pincode;
-        propertyobj.addres.state = req.body.state; 
+        propertyobj.address.add = req.body.address;
+        propertyobj.address.city = req.body.city;
+        propertyobj.address.pincode = req.body.pincode;
+        propertyobj.address.state = req.body.state; 
         console.log(req.body.addres,'Address');
         try{
             const result = await cloudinary.uploader.upload(tempimage.tempFilePath,{
@@ -175,16 +177,29 @@ const addprop=async (req,res)=>{
     }
         
     } 
-const getprop=(req,res)=>{
-        propObj.find((err,obj)=>{
-          if(err){
-            let reponsed={status:"Error to get data",error:err,success:false}
-            res.status(404).send(reponsed)
-          }   
-          else{
-            res.status(200).send({data:obj,success:true});
-          }
-        })
+const getprop=async (req,res)=>{
+    try {
+        let [data,err] = await getAllData(propObj);
+        if(err){
+            let reponsed={message:"Error to get data",error:err,success:false,status:"Failed"}
+            return res.status(404).send(reponsed);
+            // sendResponse(res,"Failed get property",{},"success",200,)    
+        }
+        return sendResponse(res,"Successfull get all property","success",200,data)
+    } catch (error) {
+        let reponsed={message:"Error to get data",error:error,success:false,status:"Failed"}
+        return res.status(404).send(reponsed);
+    }
+   
+        // propObj.find((err,obj)=>{
+        //   if(err){
+        //     let reponsed={status:"Error to get data",error:err,success:false}
+        //     res.status(404).send(reponsed)
+        //   }   
+        //   else{
+        //     res.status(200).send({data:obj,success:true});
+        //   }
+        // })
     
 }
 module.exports={
