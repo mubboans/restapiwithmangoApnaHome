@@ -9,25 +9,24 @@ route.post('/register',valrequest,register)
 
 route.post('/login',valrequest ,login)
 
-route.get('/gauth/success',getgauthsuccess)
+route.get('/auth/google',passport.authenticate("google",["profile","email"]))
 
-route.get('/google',passport.authenticate('google',{scope:['profile']}))
+route.get('/auth/google/callback',passport.authenticate("google",{failureRedirect:`/login`}),getgauthsuccess);
 
-route.get('/auth/google/callback',passport.authenticate("google",{failureRedirect:'/login'}),
-getgauthsuccess
-)
 
+// passport.authenticate("google",{failureRedirect:`${process.env.FRONT_URL_LIVE}login`}),
 route.get('/auth/facebook', passport.authenticate('facebook',{scope:['profile','email']}));
 
 route.get('/auth/facebook/callback',
-  passport.authenticate('facebook', {failureRedirect: '/login'}),
+  // passport.authenticate('facebook', {failureRedirect: `${process.env.FRONT_URL_LIVE}login`}),
+  passport.authenticate('facebook', {failureRedirect: `${process.env.FRONT_URL_LOCAL}login`}),
  getfacebookuserregister);
-
+ 
 
 route.get('/user',(req,res)=>{
     var data=['Ansari','Mubashir','Rafique','Ahmed'];
     res.send(data);
     console.log(data,req.body);
 })
-route.get('/google',passport.authenticate("google",["profile","email"]))
+
 module.exports = route; 

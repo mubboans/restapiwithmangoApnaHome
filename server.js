@@ -45,7 +45,7 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-app.use('/myapi/apnahome',authroute);
+app.use('',authroute);
 app.use('/myapi/apnahome',verifyToken,propertyroute);
 app.use('/myapi/apnahome',verifyToken,userroute);
 app.use(notFound);

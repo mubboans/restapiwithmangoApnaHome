@@ -49,7 +49,7 @@ const Login =async (req,res,next)=>{
                 } 
                 else{
                   if(succ.isDeleted){
-                    return res.send({message:"This user has beed deleted",status:"Try again",success:false,error:"User Deleted"})
+                    return res.status(401).send({message:"This user has beed deleted",status:"Try again",success:false,error:"User Deleted"})
                   }  
                     console.log(req.body)
                     let payload={username:succ.username,id:succ._id,email:succ.email,type:succ.type,user_role:succ.user_role}
@@ -98,6 +98,7 @@ const Register = async(req,res)=>{
     } 
 }
 const getfacebookuserregister = async (req,res)=>{
+    console.log('facebook called');
     let data = req.user;
     let password = generatePassword(12);
     let addfour = generateRandomFourDigitNumber();
@@ -112,6 +113,11 @@ const getfacebookuserregister = async (req,res)=>{
     let userdataamodel =new User(UsersObj);
     let checkuser =await User.find({facebookId:data.id});
     if(checkuser.length > 0){
+        if(checkuser[0].isDeleted){
+            // return res.redirect(`${process.env.FRONT_URL_LOCAL}login`); 
+             return res.redirect(`${process.env.FRONT_URL_LIVE}login`);
+
+        }
         let payload={username:checkuser[0].username,id:checkuser[0]._id,email:UsersObj.email,type:UsersObj.type,user_role:UsersObj.user_role}
         var tok=attachedTokens({user:payload}) 
         const queryParams = new URLSearchParams();
@@ -124,6 +130,7 @@ const getfacebookuserregister = async (req,res)=>{
         const jsonData = JSON.stringify(payload);
         const encodedData = encodeURIComponent(jsonData);
         res.redirect(`${process.env.FRONT_URL_LIVE}checkuser?${queryParams.toString()}&data=${encodedData}`)
+        // res.redirect(`${process.env.FRONT_URL_LOCAL}checkuser?${queryParams.toString()}&data=${encodedData}`)
     }
     else{
         userdataamodel.username=data._json.first_name + addfour,
@@ -154,6 +161,7 @@ const getfacebookuserregister = async (req,res)=>{
      
        const encodedData = encodeURIComponent(jsonData);
              res.redirect(`${process.env.FRONT_URL_LIVE}checkuser?${queryParams.toString()}&data=${encodedData}`)
+            //  res.redirect(`${process.env.FRONT_URL_LOCAL}checkuser?${queryParams.toString()}&data=${encodedData}`)
          }
      })
 
@@ -175,8 +183,12 @@ const getgauthsuccess =async (req, res) => {
    let userdataamodel =new User(UsersObj);
    let checkuser =await User.find({email:data._json.email});
    if(checkuser.length > 0){
+    if(checkuser[0].isDeleted){
+        // return res.redirect(`${process.env.FRONT_URL_LOCAL}login`);
+        return res.redirect(`${process.env.FRONT_URL_LIVE}login`);
+    }
     let payload={username:checkuser[0].username,id:checkuser[0]._id,email:UsersObj.email,type:UsersObj.type,user_role:UsersObj.user_role}
-    var tok=attachedTokens({user:payload}) 
+    var tok=attachedTokens({user:payload})  
     const queryParams = new URLSearchParams();
     queryParams.append('error','none');
     queryParams.append('success',true)
@@ -188,15 +200,15 @@ const getgauthsuccess =async (req, res) => {
     const encodedData = encodeURIComponent(jsonData);
     console.log(process.env.FRONT_URL_LIVE,'else');
     res.redirect(`${process.env.FRONT_URL_LIVE}checkuser?${queryParams.toString()}&data=${encodedData}`)
+    // res.redirect(`${process.env.FRONT_URL_LOCAL}checkuser?${queryParams.toString()}&data=${encodedData}`)
    }
    else{
     userdataamodel.username=data._json.given_name + addfour,
         userdataamodel.save((err,register)=>{
          if(err)
          {
-             
              let resposnes={
-                 resons:err,
+                 error:err,
                  status:"failed",
                  success:false
              }
@@ -218,7 +230,8 @@ const getgauthsuccess =async (req, res) => {
      
        const encodedData = encodeURIComponent(jsonData);
        console.log(process.env.FRONT_URL_LIVE,'if');
-             res.redirect(`${process.env.FRONT_URL_LIVE}checkuser?${queryParams.toString()}&data=${encodedData}`)
+             res.redirect(`${process.env.FRONT_URL_LIVE}checkuser?${queryParams.toString()}&data=${encodedData}`) 
+            //   res.redirect(`${process.env.FRONT_URL_LOCAL}checkuser?${queryParams.toString()}&data=${encodedData}`)
          }
      })
         }
